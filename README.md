@@ -1,16 +1,34 @@
-# React + Vite
+# 🌾CropWise Project 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**CropWise** là một ứng dụng web được xây dựng bằng **React + Vite**, nhằm mục đích **tối ưu hóa việc quản lý và theo dõi cây trồng** thông qua giao diện hiện đại, dễ sử dụng và khả năng mở rộng linh hoạt.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠️ 1. Yêu cầu Cài đặt & Khởi động Dự án
 
-## React Compiler
+### A. Yêu cầu Tiên quyết (Prerequisites)
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Trước khi bắt đầu, hãy đảm bảo bạn đã cài đặt:
 
-## Expanding the ESLint configuration
+- [Node.js](https://nodejs.org/) (khuyến nghị phiên bản **18+**)  
+- [npm](https://www.npmjs.com/) (đi kèm với Node.js)  
+- [Git](https://git-scm.com/)
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+### B. Khởi chạy Lần đầu
+
+Thực hiện các bước sau trong Terminal:
+
+```bash
+# 1️⃣ Clone Repository
+git clone [Link SSH hoặc HTTPS của GitHub Repository]
+
+# 2️⃣ Di chuyển vào thư mục dự án
+cd CropWise
+
+# 3️⃣ Cài đặt các gói phụ thuộc
+npm install
+
+# 4️⃣ Khởi động máy chủ phát triển
+npm run dev
