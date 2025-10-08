@@ -1,6 +1,6 @@
 # 🌾CropWise Project 
 
-**CropWise** là một ứng dụng web được xây dựng bằng **React + Vite**, nhằm mục đích **tối ưu hóa việc quản lý và theo dõi cây trồng** thông qua giao diện hiện đại, dễ sử dụng và khả năng mở rộng linh hoạt.
+**CropWise** là một ứng dụng web được xây dựng bằng **React + Vite**, nhằm mục đích **tối ưu hóa việc quản lý, theo dõi, chẩn đoán bệnh trên cây ngô theo khí hậu thổ những tại Việt Nam** thông qua giao diện hiện đại, dễ sử dụng và khả năng mở rộng linh hoạt.
 
 ---
 
