@@ -6,10 +6,10 @@ const Card = ({
   ...props 
 }) => {
   // Base styles
-  const baseStyles = 'bg-white rounded-xl shadow-sm border border-gray-200';
+  const baseStyles = 'bg-white rounded-xl shadow-sm border border-light-border';
   
   // Hover effect
-  const hoverStyles = hover ? 'hover:shadow-lg hover:border-gray-300 transition-all duration-200' : '';
+  const hoverStyles = hover ? 'hover:shadow-xl hover:border-primary/30 hover:bg-gradient-to-br hover:from-white hover:to-primary/5 transition-all duration-300' : '';
   
   // Padding styles
   const paddingStyles = {

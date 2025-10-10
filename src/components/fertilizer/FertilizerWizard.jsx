@@ -81,14 +81,14 @@ const FertilizerWizard = () => {
   const CurrentComponent = currentStepData.component;
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-subtle-bg py-8">
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
+          <h1 className="text-3xl font-bold text-primary-dark mb-4">
             Tư vấn phân bón cho cây ngô
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-neutral-text max-w-2xl mx-auto">
             Nhận khuyến nghị phân bón phù hợp dựa trên vị trí địa lý, 
             loại đất và giai đoạn sinh trưởng của cây
           </p>
@@ -102,22 +102,22 @@ const FertilizerWizard = () => {
                 <div className={`
                   w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
                   ${currentStep >= step.number 
-                    ? 'bg-green-500 text-white' 
-                    : 'bg-gray-200 text-gray-600'
+                    ? 'bg-primary text-white' 
+                    : 'bg-gray-200 text-neutral-text'
                   }
                 `}>
                   {step.number}
                 </div>
                 <span className={`
                   ml-2 text-sm font-medium
-                  ${currentStep >= step.number ? 'text-green-600' : 'text-gray-500'}
+                  ${currentStep >= step.number ? 'text-primary' : 'text-neutral-text'}
                 `}>
                   {step.title}
                 </span>
                 {index < steps.length - 1 && (
                   <div className={`
                     w-8 h-0.5 mx-4
-                    ${currentStep > step.number ? 'bg-green-500' : 'bg-gray-200'}
+                    ${currentStep > step.number ? 'bg-primary' : 'bg-gray-200'}
                   `} />
                 )}
               </div>
@@ -143,24 +143,24 @@ const FertilizerWizard = () => {
         >
           <div className="space-y-6">
             {/* Summary */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <h3 className="font-semibold text-gray-900 mb-3">Thông tin canh tác:</h3>
+            <div className="bg-subtle-bg rounded-lg p-4">
+              <h3 className="font-semibold text-primary-dark mb-3">Thông tin canh tác:</h3>
               <div className="grid md:grid-cols-3 gap-4 text-sm">
                 <div>
-                  <span className="text-gray-600">Vị trí:</span>
-                  <span className="ml-2 font-medium">{formData.location}</span>
+                  <span className="text-neutral-text">Vị trí:</span>
+                  <span className="ml-2 font-medium text-primary-dark">{formData.location}</span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Đất:</span>
-                  <span className="ml-2 font-medium">
+                  <span className="text-neutral-text">Đất:</span>
+                  <span className="ml-2 font-medium text-primary-dark">
                     {formData.soilType === 'clay' ? 'Đất sét' : 
                      formData.soilType === 'loam' ? 'Đất thịt' : 
                      formData.soilType === 'sandy' ? 'Đất cát' : ''}
                   </span>
                 </div>
                 <div>
-                  <span className="text-gray-600">Giai đoạn:</span>
-                  <span className="ml-2 font-medium">
+                  <span className="text-neutral-text">Giai đoạn:</span>
+                  <span className="ml-2 font-medium text-primary-dark">
                     {formData.cropStage === 'germination' ? 'Nảy mầm' :
                      formData.cropStage === 'seedling' ? 'Cây con' :
                      formData.cropStage === 'vegetative' ? 'Sinh trưởng sinh dưỡng' :
@@ -177,39 +177,39 @@ const FertilizerWizard = () => {
               const recommendation = getFertilizerRecommendation(formData);
               return (
                 <div className="space-y-4">
-                  <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <h3 className="font-semibold text-green-900 mb-3">Khuyến nghị phân bón:</h3>
+                  <div className="bg-primary/10 border border-primary/20 rounded-lg p-4">
+                    <h3 className="font-semibold text-primary-dark mb-3">Khuyến nghị phân bón:</h3>
                     <div className="grid md:grid-cols-2 gap-4">
                       <div>
-                        <span className="text-green-700">Loại phân:</span>
-                        <span className="ml-2 font-medium text-green-900">{recommendation.fertilizer}</span>
+                        <span className="text-primary">Loại phân:</span>
+                        <span className="ml-2 font-medium text-primary-dark">{recommendation.fertilizer}</span>
                       </div>
                       <div>
-                        <span className="text-green-700">Liều lượng:</span>
-                        <span className="ml-2 font-medium text-green-900">{recommendation.amount}</span>
+                        <span className="text-primary">Liều lượng:</span>
+                        <span className="ml-2 font-medium text-primary-dark">{recommendation.amount}</span>
                       </div>
                       <div>
-                        <span className="text-green-700">Cách bón:</span>
-                        <span className="ml-2 font-medium text-green-900">{recommendation.method}</span>
+                        <span className="text-primary">Cách bón:</span>
+                        <span className="ml-2 font-medium text-primary-dark">{recommendation.method}</span>
                       </div>
                       <div>
-                        <span className="text-green-700">Thời điểm:</span>
-                        <span className="ml-2 font-medium text-green-900">{recommendation.timing}</span>
+                        <span className="text-primary">Thời điểm:</span>
+                        <span className="ml-2 font-medium text-primary-dark">{recommendation.timing}</span>
                       </div>
                     </div>
                     <div className="mt-3">
-                      <span className="text-green-700">Ghi chú thêm:</span>
-                      <span className="ml-2 text-green-900">{recommendation.additional}</span>
+                      <span className="text-primary">Ghi chú thêm:</span>
+                      <span className="ml-2 text-primary-dark">{recommendation.additional}</span>
                     </div>
                   </div>
 
                   {/* Notes */}
-                  <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <h4 className="font-medium text-blue-900 mb-2">Lưu ý quan trọng:</h4>
+                  <div className="bg-accent/10 border border-accent/20 rounded-lg p-4">
+                    <h4 className="font-medium text-accent mb-2">Lưu ý quan trọng:</h4>
                     <ul className="space-y-1">
                       {recommendation.notes.map((note, index) => (
-                        <li key={index} className="flex items-start text-sm text-blue-800">
-                          <span className="w-2 h-2 bg-blue-400 rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
+                        <li key={index} className="flex items-start text-sm text-accent">
+                          <span className="w-2 h-2 bg-accent rounded-full mt-1.5 mr-2 flex-shrink-0"></span>
                           {note}
                         </li>
                       ))}
@@ -223,7 +223,7 @@ const FertilizerWizard = () => {
             <div className="flex flex-col sm:flex-row gap-4 pt-4">
               <button
                 onClick={handleCloseResult}
-                className="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                className="flex-1 bg-primary text-white py-3 px-6 rounded-lg font-medium hover:bg-primary-dark transition-colors"
               >
                 Hoàn thành
               </button>
@@ -233,7 +233,7 @@ const FertilizerWizard = () => {
                   setCurrentStep(1);
                   setFormData({ location: '', soilType: '', cropStage: '' });
                 }}
-                className="flex-1 border border-gray-300 text-gray-700 py-3 px-6 rounded-lg font-medium hover:bg-gray-50 transition-colors"
+                className="flex-1 border border-light-border text-neutral-text py-3 px-6 rounded-lg font-medium hover:bg-subtle-bg transition-colors"
               >
                 Tư vấn lại
               </button>

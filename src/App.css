@@ -1,9 +1,4 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
+/* Removed conflicting styles - using Tailwind classes instead */
 
 .logo {
   height: 6em;
@@ -39,4 +34,22 @@
 
 .read-the-docs {
   color: #888;
+}
+
+/* Custom styles for fertilizer page buttons */
+.fertilizer-btn-primary {
+  background-color: #2A9D8F !important;
+  color: white !important;
+  border: none !important;
+}
+
+.fertilizer-btn-primary:hover {
+  background-color: #264653 !important;
+  color: white !important;
+}
+
+.fertilizer-btn-disabled {
+  background-color: #D1D5DB !important;
+  color: #6B7280 !important;
+  border: 2px solid #9CA3AF !important;
 }

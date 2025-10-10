@@ -6,7 +6,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <div className="flex items-center space-x-2 mb-4">
-              <div className="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+              <div className="w-6 h-6 bg-primary rounded-full flex items-center justify-center">
                 <span className="text-white font-bold text-xs">🌽</span>
               </div>
               <span className="text-lg font-bold">Bác Sĩ Ngô AI</span>
@@ -21,22 +21,22 @@ const Footer = () => {
             <h3 className="text-lg font-semibold mb-4">Liên kết nhanh</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/chan-doan" className="text-gray-300 hover:text-green-400 transition-colors">
+                <a href="/chan-doan" className="text-gray-300 hover:text-accent transition-colors">
                   Chẩn đoán bệnh
                 </a>
               </li>
               <li>
-                <a href="/tu-van-phan-bon" className="text-gray-300 hover:text-green-400 transition-colors">
+                <a href="/tu-van-phan-bon" className="text-gray-300 hover:text-accent transition-colors">
                   Tư vấn phân bón
                 </a>
               </li>
               <li>
-                <a href="/ban-do-dich-benh" className="text-gray-300 hover:text-green-400 transition-colors">
+                <a href="/ban-do-dich-benh" className="text-gray-300 hover:text-accent transition-colors">
                   Bản đồ dịch bệnh
                 </a>
               </li>
               <li>
-                <a href="/nha-cung-cap" className="text-gray-300 hover:text-green-400 transition-colors">
+                <a href="/nha-cung-cap" className="text-gray-300 hover:text-accent transition-colors">
                   Nhà cung cấp
                 </a>
               </li>
@@ -61,10 +61,10 @@ const Footer = () => {
               © 2024 Bác Sĩ Ngô AI. Tất cả quyền được bảo lưu.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-accent transition-colors">
                 Điều khoản sử dụng
               </a>
-              <a href="#" className="text-gray-400 hover:text-green-400 transition-colors">
+              <a href="#" className="text-gray-400 hover:text-accent transition-colors">
                 Chính sách bảo mật
               </a>
             </div>
