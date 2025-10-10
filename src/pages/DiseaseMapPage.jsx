@@ -1,180 +1,180 @@
-import Card from '../components/shared/Card';
+import React, { useState } from 'react';
+import { MapContainer, TileLayer, Marker, Popup, Polygon } from 'react-leaflet';
+import { Icon } from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-const DiseaseMapPage = () => {
-  // Mock data for disease map
-  const diseaseData = [
-    { province: 'Hà Nội', disease: 'Bệnh đốm lá', severity: 'Cao', cases: 45 },
-    { province: 'TP. Hồ Chí Minh', disease: 'Bệnh rỉ sắt', severity: 'Trung bình', cases: 23 },
-    { province: 'Đà Nẵng', disease: 'Bệnh khô vằn', severity: 'Thấp', cases: 8 },
-    { province: 'Cần Thơ', disease: 'Bệnh đốm lá', severity: 'Cao', cases: 38 },
-    { province: 'An Giang', disease: 'Bệnh rỉ sắt', severity: 'Trung bình', cases: 29 },
-    { province: 'Bình Dương', disease: 'Bệnh khô vằn', severity: 'Thấp', cases: 12 }
+// Dữ liệu giả cho các ca bệnh
+const reportedOutbreaks = [
+  { id: 1, position: [10.7769, 106.7009], disease: 'Bệnh Đốm Lá Lớn', severity: 'Cao' },
+  { id: 2, position: [10.775, 106.702], disease: 'Bệnh Đốm Lá Lớn', severity: 'Trung bình' },
+  { id: 3, position: [10.78, 106.705], disease: 'Bệnh Gỉ Sắt', severity: 'Cao' },
+  { id: 4, position: [10.772, 106.698], disease: 'Bệnh Thối Rễ', severity: 'Thấp' },
+  { id: 5, position: [10.785, 106.710], disease: 'Bệnh Đốm Lá Lớn', severity: 'Cao' },
+];
+
+// Tạo icon tùy chỉnh cho markers
+const createCustomIcon = (color) => new Icon({
+  iconUrl: `data:image/svg+xml;base64,${btoa(`
+    <svg width="25" height="41" viewBox="0 0 25 41" xmlns="http://www.w3.org/2000/svg">
+      <path fill="${color}" stroke="#fff" stroke-width="2" d="M12.5 0C5.6 0 0 5.6 0 12.5c0 12.5 12.5 28.5 12.5 28.5s12.5-16 12.5-28.5C25 5.6 19.4 0 12.5 0z"/>
+      <circle fill="#fff" cx="12.5" cy="12.5" r="6"/>
+    </svg>
+  `)}`,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+});
+
+// Component cho vùng dự báo AI
+const PredictionLayer = () => {
+  // Tạo vùng dự báo dạng polygon bao quanh các điểm bệnh
+  const predictionZone = [
+    [10.770, 106.695], // Điểm góc dưới trái
+    [10.790, 106.695], // Điểm góc dưới phải
+    [10.790, 106.715], // Điểm góc trên phải
+    [10.770, 106.715], // Điểm góc trên trái
+    [10.770, 106.695]  // Đóng polygon
   ];
 
-  const getSeverityColor = (severity) => {
-    switch (severity) {
-      case 'Cao': return 'bg-red-100 text-red-800 border-red-200';
-      case 'Trung bình': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
-      case 'Thấp': return 'bg-green-100 text-green-800 border-green-200';
-      default: return 'bg-gray-100 text-gray-800 border-gray-200';
-    }
-  };
+  return (
+    <Polygon
+      positions={predictionZone}
+      pathOptions={{
+        color: '#ff6b35',
+        fillColor: '#ff6b35',
+        fillOpacity: 0.3,
+        weight: 2,
+        dashArray: '5, 5'
+      }}
+    />
+  );
+};
+
+// Component cho Legend
+const MapLegend = () => (
+  <div className="absolute top-4 right-4 bg-white p-4 rounded-lg shadow-lg z-[1000] max-w-xs">
+    <h3 className="font-semibold text-gray-800 mb-3">Chú giải</h3>
+    <div className="space-y-2">
+      <div className="flex items-center space-x-2">
+        <div className="w-4 h-4 bg-red-500 rounded-full"></div>
+        <span className="text-sm text-gray-700">Ca bệnh đã xác nhận</span>
+      </div>
+      <div className="flex items-center space-x-2">
+        <div className="w-4 h-4 bg-orange-500 rounded-full"></div>
+        <span className="text-sm text-gray-700">Vùng AI dự báo lây lan</span>
+      </div>
+      <div className="mt-3 pt-2 border-t border-gray-200">
+        <p className="text-xs text-gray-600">
+          Dự báo dựa trên mô hình AI, dữ liệu thời tiết và mô hình lây lan
+        </p>
+      </div>
+    </div>
+  </div>
+);
+
+// Component chính
+const DiseaseMapPage = () => {
+  const [showPrediction, setShowPrediction] = useState(false);
+  
+  // Tọa độ trung tâm (TP.HCM)
+  const center = [10.7769, 106.7009];
+  const zoom = 13;
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-4">
-            Bản đồ dịch bệnh ngô
-          </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Theo dõi tình hình dịch bệnh ngô trên toàn quốc và nhận cảnh báo sớm 
-            để bảo vệ vụ mùa của bạn
-          </p>
-        </div>
-
-        {/* Stats Cards */}
-        <div className="grid md:grid-cols-4 gap-6 mb-8">
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-red-600 mb-2">15</div>
-            <div className="text-sm text-gray-600">Tỉnh có dịch bệnh</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-yellow-600 mb-2">8</div>
-            <div className="text-sm text-gray-600">Loại bệnh phổ biến</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-blue-600 mb-2">155</div>
-            <div className="text-sm text-gray-600">Ca bệnh được báo cáo</div>
-          </Card>
-          <Card className="text-center">
-            <div className="text-2xl font-bold text-green-600 mb-2">95%</div>
-            <div className="text-sm text-gray-600">Độ chính xác dự báo</div>
-          </Card>
-        </div>
-
-        {/* Map placeholder */}
-        <Card className="mb-8">
-          <div className="aspect-video bg-gradient-to-br from-green-100 to-blue-100 rounded-lg flex items-center justify-center">
-            <div className="text-center">
-              <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
-                <span className="text-3xl">🗺️</span>
-              </div>
-              <h3 className="text-lg font-semibold text-gray-700 mb-2">
-                Bản đồ tương tác
-              </h3>
-              <p className="text-gray-500 text-sm">
-                Tính năng đang được phát triển. Sẽ hiển thị bản đồ Việt Nam 
-                với các điểm dịch bệnh được cập nhật real-time.
-              </p>
+      {/* Header */}
+      <div className="bg-white shadow-sm border-b">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
+            <div>
+              <h1 className="text-2xl font-bold text-gray-900">Bản đồ Dịch bệnh</h1>
+              <p className="text-gray-600 mt-1">Theo dõi và dự báo lây lan dịch bệnh cây trồng</p>
+            </div>
+            
+            {/* Toggle Button */}
+            <div className="flex items-center space-x-4">
+              <label className="flex items-center space-x-2 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={showPrediction}
+                  onChange={(e) => setShowPrediction(e.target.checked)}
+                  className="w-4 h-4 text-orange-600 bg-gray-100 border-gray-300 rounded focus:ring-orange-500"
+                />
+                <span className="text-sm font-medium text-gray-700">
+                  Hiển thị Vùng Dự báo AI
+                </span>
+              </label>
             </div>
           </div>
-        </Card>
+        </div>
+      </div>
 
-        {/* Disease list */}
-        <div className="grid lg:grid-cols-2 gap-8">
-          {/* Recent reports */}
-          <Card>
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Báo cáo dịch bệnh gần đây
-            </h2>
-            <div className="space-y-4">
-              {diseaseData.map((item, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                  <div className="flex-1">
-                    <div className="font-medium text-gray-900">{item.province}</div>
-                    <div className="text-sm text-gray-600">{item.disease}</div>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <span className="text-sm text-gray-500">{item.cases} ca</span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium border ${getSeverityColor(item.severity)}`}>
-                      {item.severity}
+      {/* Map Container */}
+      <div className="relative h-[calc(100vh-120px)]">
+        <MapContainer
+          center={center}
+          zoom={zoom}
+          style={{ height: '100%', width: '100%' }}
+          className="z-0"
+        >
+          <TileLayer
+            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          />
+          
+          {/* Render các điểm bệnh */}
+          {reportedOutbreaks.map((outbreak) => (
+            <Marker
+              key={outbreak.id}
+              position={outbreak.position}
+              icon={createCustomIcon('#ef4444')}
+            >
+              <Popup>
+                <div className="p-2">
+                  <h3 className="font-semibold text-gray-800">{outbreak.disease}</h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Mức độ: <span className={`font-medium ${
+                      outbreak.severity === 'Cao' ? 'text-red-600' :
+                      outbreak.severity === 'Trung bình' ? 'text-yellow-600' :
+                      'text-green-600'
+                    }`}>
+                      {outbreak.severity}
                     </span>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </Card>
-
-          {/* Disease prevention tips */}
-          <Card>
-            <h2 className="text-xl font-semibold text-gray-900 mb-6">
-              Biện pháp phòng ngừa
-            </h2>
-            <div className="space-y-4">
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm">🌱</span>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">Chọn giống kháng bệnh</h3>
-                  <p className="text-sm text-gray-600">
-                    Sử dụng các giống ngô có khả năng kháng bệnh cao
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    Tọa độ: {outbreak.position[0].toFixed(4)}, {outbreak.position[1].toFixed(4)}
                   </p>
                 </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm">💧</span>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">Quản lý nước tốt</h3>
-                  <p className="text-sm text-gray-600">
-                    Tránh để nước đọng, tạo hệ thống thoát nước hiệu quả
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm">🔍</span>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">Kiểm tra thường xuyên</h3>
-                  <p className="text-sm text-gray-600">
-                    Thường xuyên kiểm tra và phát hiện sớm các dấu hiệu bệnh
-                  </p>
-                </div>
-              </div>
-              
-              <div className="flex items-start space-x-3">
-                <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm">🧪</span>
-                </div>
-                <div>
-                  <h3 className="font-medium text-gray-900">Xử lý kịp thời</h3>
-                  <p className="text-sm text-gray-600">
-                    Sử dụng thuốc trừ sâu/bệnh khi phát hiện sớm
-                  </p>
-                </div>
-              </div>
-            </div>
-          </Card>
-        </div>
-
-        {/* Alert system */}
-        <Card className="mt-8">
-          <div className="text-center">
-            <h2 className="text-xl font-semibold text-gray-900 mb-4">
-              Hệ thống cảnh báo sớm
-            </h2>
-            <p className="text-gray-600 mb-6">
-              Đăng ký nhận thông báo về dịch bệnh tại khu vực của bạn
+              </Popup>
+            </Marker>
+          ))}
+          
+          {/* Hiển thị vùng dự báo khi được bật */}
+          {showPrediction && <PredictionLayer />}
+        </MapContainer>
+        
+        {/* Legend */}
+        <MapLegend />
+        
+        {/* Thông tin thống kê */}
+        <div className="absolute bottom-4 left-4 bg-white p-4 rounded-lg shadow-lg z-[1000]">
+          <h3 className="font-semibold text-gray-800 mb-2">Thống kê</h3>
+          <div className="space-y-1 text-sm">
+            <p className="text-gray-600">
+              Tổng ca bệnh: <span className="font-medium text-red-600">{reportedOutbreaks.length}</span>
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email"
-                placeholder="Nhập email của bạn"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
-              />
-              <button className="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors">
-                Đăng ký
-              </button>
-            </div>
+            <p className="text-gray-600">
+              Đang theo dõi: <span className="font-medium text-orange-600">
+                {reportedOutbreaks.filter(o => o.severity === 'Cao').length} ca nghiêm trọng
+              </span>
+            </p>
+            {showPrediction && (
+              <p className="text-gray-600">
+                Vùng nguy cơ: <span className="font-medium text-orange-600">Đang hoạt động</span>
+              </p>
+            )}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );

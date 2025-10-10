@@ -80,6 +80,18 @@ const Navbar = () => {
               >
                 Nhà cung cấp
               </NavLink>
+              <NavLink
+                to="/demo"
+                className={({ isActive }) =>
+                  `px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200 ${
+                    isActive
+                      ? 'bg-primary/10 text-primary'
+                      : 'text-neutral-text hover:text-primary hover:bg-primary/5'
+                  }`
+                }
+              >
+                Demo Tính năng AI
+              </NavLink>
             </div>
           </div>
 

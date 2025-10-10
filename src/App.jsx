@@ -6,6 +6,7 @@ import DiagnosisPage from './pages/DiagnosisPage';
 import FertilizerPage from './pages/FertilizerPage';
 import DiseaseMapPage from './pages/DiseaseMapPage';
 import SuppliersPage from './pages/SuppliersPage';
+import DemoPage from './pages/DemoPage';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="/tu-van-phan-bon" element={<FertilizerPage />} />
             <Route path="/ban-do-dich-benh" element={<DiseaseMapPage />} />
             <Route path="/nha-cung-cap" element={<SuppliersPage />} />
+            <Route path="/demo" element={<DemoPage />} />
           </Routes>
         </main>
         
